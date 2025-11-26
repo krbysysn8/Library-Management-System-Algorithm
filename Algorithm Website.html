@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Algorithm Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            color: #000000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0,0,0,0.03) 10px,
+                rgba(0,0,0,0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            background: #ffffff;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #000000;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .section {
+            background: #ffffff;
+            color: #000000;
+            margin: 40px 0;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(255,255,255,0.2);
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000000;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin: 30px 0 15px;
+            color: #333;
+        }
+
+        .function-card {
+            background: #f5f5f5;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 4px solid #000000;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .function-card:hover {
+            background: #e8e8e8;
+            transform: translateX(10px);
+        }
+
+        .function-name {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .algorithm-steps {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+        }
+
+        .algorithm-steps li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        code {
+            background: #000000;
+            color: #00ff00;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background: #000000;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: #ffff00;
+            color: #000000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #ffffff;
+            color: #000000;
+            margin-top: 60px;
+            border-top: 3px solid #000000;
+        }
+
+        .controller-badge {
+            display: inline-block;
+            background: #000000;
+            color: #ffffff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
+            .section { padding: 25px; }
+            nav ul { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Library Management System</h1>
+        <p class="subtitle">Algorithm Documentation & Implementation Guide</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#user-functions">User Functions</a></li>
+            <li><a href="#admin-functions">Admin Functions</a></li>
+            <li><a href="#sorting">Sorting Algorithms</a></li>
+            <li><a href="#filtering">Filtering Logic</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="user-functions" class="section">
+            <h2>📖 User Functions</h2>
+            <span class="controller-badge">BookController.php</span>
+
+            <div class="function-card">
+                <div class="function-name">books_display()</div>
+                <p><strong>Purpose:</strong> Display books to users with search, filtering, and categorization capabilities.</p>
+                
+                <h3>🔍 Search Algorithm</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li>Check if <code>search</code> parameter exists in request</li>
+                        <li>If search term present:
+                            <ul>
+                                <li>Query books with eager-loaded relationships (<code>category</code>, <code>loans</code> count)</li>
+                                <li>Apply multi-field LIKE search:
+                                    <ul>
+                                        <li><span class="highlight">title</span></li>
+                                        <li><span class="highlight">author</span></li>
+                                        <li><span class="highlight">isbn</span></li>
+                                        <li><span class="highlight">category name</span> (via relationship)</li>
+                                    </ul>
+                                </li>
+                                <li>Set current grade to "Search Results"</li>
+                                <li>Clear available categories</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="code-block">$booksQuery->where(function ($query) use ($searchTerm) {
+    $query->where('title', 'like', '%' . $searchTerm . '%')
+          ->orWhere('author', 'like', '%' . $searchTerm . '%')
+          ->orWhere('isbn', 'like', '%' . $searchTerm . '%')
+          ->orWhereHas('category', function ($categoryQuery) use ($searchTerm) {
+              $categoryQuery->where('name', 'like', '%' . $searchTerm . '%');
+          });
+});</div>
+
+                <h3>🎯 Filtering by Grade Level & Category</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li>If <code>isOtherBooks</code> flag is true:
+                            <ul>
+                                <li>Query books where <code>grade_level_id IS NULL</code></li>
+                                <li>Fetch categories that have books without grade levels</li>
+                            </ul>
+                        </li>
+                        <li>Otherwise:
+                            <ul>
+                                <li>If no grade level ID provided, fetch first grade level (ordered by ID)</li>
+                                <li>If grade level ID provided, fetch that specific grade level</li>
+                                <li>Filter books by <code>grade_level_id</code></li>
+                                <li>Fetch categories that have books for this grade level</li>
+                            </ul>
+                        </li>
+                        <li>Apply category filter if <code>categoryId</code> is present:
+                            <ul>
+                                <li>If no category selected, default to first available category</li>
+                                <li>Filter books by <code>category_id</code></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <div class="function-name">my_borrowed_books()</div>
+                <p><strong>Purpose:</strong> Display user's currently borrowed books and pending requests with intelligent sorting.</p>
+                
+                <h3>⏰ Sorting Algorithm</h3>
+                <div class="algorithm-steps">
+                    <strong>Active Loans:</strong>
+                    <ol>
+                        <li>Filter loans by:
+                            <ul>
+                                <li>User ID matches current user</li>
+                                <li><code>return_date IS NULL</code></li>
+                                <li>Status in: <code>approved</code>, <code>renewal_pending</code>, <code>renewal_approved</code>, <code>renewal_rejected</code></li>
+                            </ul>
+                        </li>
+                        <li>Sort by <code>due_date ASC</code> (soonest first) — <span class="highlight">Priority sorting</span></li>
+                        <li>Then sort by <code>created_at ASC</code> (oldest first)</li>
+                    </ol>
+                    
+                    <strong>Pending Requests:</strong>
+                    <ol>
+                        <li>Filter by status = <code>pending</code> and <code>return_date IS NULL</code></li>
+                        <li>Sort by <code>created_at DESC</code> (newest first)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <div class="function-name">my_borrowing_history() & my_returned_books()</div>
+                <p><strong>Purpose:</strong> Display historical borrowing data with custom sorting.</p>
+                
+                <h3>🔄 Custom Sort Algorithm</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li>Convert return dates to timestamps using <code>strtotime()</code></li>
+                        <li>Compare return dates:
+                            <ul>
+                                <li>If different: Sort by <code>return_date DESC</code> (most recent first)</li>
+                                <li>Uses spaceship operator <code>&lt;=&gt;</code>:
+                                    <ul>
+                                        <li>Returns -1 if A < B (A before B)</li>
+                                        <li>Returns 0 if A = B</li>
+                                        <li>Returns 1 if A > B (A after B)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>If return dates are equal:
+                            <ul>
+                                <li>Sort by <code>updated_at DESC</code> (most recently updated first)</li>
+                            </ul>
+                        </li>
+                        <li>Reindex collection with <code>values()</code></li>
+                    </ol>
+                </div>
+
+                <div class="code-block">$sortedHistory = $processedHistory->sort(function ($a, $b) {
+    $returnA = strtotime($a['return_date']);
+    $returnB = strtotime($b['return_date']);
+    
+    if ($returnA !== $returnB) {
+        return $returnB <=> $returnA; // DESC by return date
+    }
+    return $b['updated_at'] <=> $a['updated_at']; // DESC by updated_at
+})->values();</div>
+            </div>
+        </section>
+
+        <section id="admin-functions" class="section">
+            <h2>⚙️ Admin Functions</h2>
+            <span class="controller-badge">AdminController.php</span>
+
+            <div class="function-card">
+                <div class="function-name">fetch_books()</div>
+                <p><strong>Purpose:</strong> Admin interface for managing books with advanced filtering and search.</p>
+                
+                <h3>🔍 Multi-Criteria Search & Filter</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li><strong>Text Search:</strong>
+                            <ul>
+                                <li>If <code>search</code> parameter filled</li>
+                                <li>Apply LIKE search on: <code>title</code>, <code>author</code>, <code>isbn</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Grade Filter:</strong>
+                            <ul>
+                                <li>If grade parameter present and not "all"</li>
+                                <li>Lookup grade ID by name</li>
+                                <li>Filter by <code>grade_level_id</code></li>
+                                <li>Special case: "Other Books" filters <code>WHERE grade_level_id IS NULL</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Category Filter:</strong>
+                            <ul>
+                                <li>If category parameter present and not "all"</li>
+                                <li>Lookup category ID by name</li>
+                                <li>Filter by <code>category_id</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Availability Status Filter:</strong></li>
+                    </ol>
+                </div>
+
+                <h3>📊 Availability Algorithm</h3>
+                <div class="algorithm-steps">
+                    <strong>Available Books:</strong>
+                    <div class="code-block">WHERE books.copies > (
+    SELECT COUNT(*) FROM loans
+    WHERE loans.book_id = books.id
+    AND loans.return_date IS NULL
+    AND loans.status IN (
+        "approved", 
+        "renewal_pending",
+        "renewal_approved", 
+        "renewal_rejected"
+    )
+)</div>
+                    <p><strong>Logic:</strong> Total copies > Number of active loans</p>
+                    
+                    <strong>Borrowed (Unavailable) Books:</strong>
+                    <div class="code-block">WHERE books.copies <= (
+    SELECT COUNT(*) FROM loans
+    WHERE loans.book_id = books.id
+    AND loans.return_date IS NULL
+    AND loans.status IN (
+        "approved", 
+        "renewal_pending",
+        "renewal_approved", 
+        "renewal_rejected"
+    )
+)</div>
+                    <p><strong>Logic:</strong> Total copies ≤ Number of active loans (all copies borrowed)</p>
+                </div>
+
+                <h3>📄 Pagination & Sorting</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li>Get <code>per_page</code> parameter (default: 20)</li>
+                        <li>Sort by <code>created_at DESC</code> (newest books first)</li>
+                        <li>Apply Laravel pagination</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <div class="function-name">admin_manage_loans()</div>
+                <p><strong>Purpose:</strong> Manage all active loans with comprehensive search across users and books.</p>
+                
+                <h3>🔎 Advanced Multi-Table Search</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li><strong>Book Search:</strong> Search via <code>book</code> relationship
+                            <ul>
+                                <li><code>title</code> LIKE search</li>
+                                <li><code>author</code> LIKE search</li>
+                            </ul>
+                        </li>
+                        <li><strong>User Search:</strong> Search via <code>user</code> relationship
+                            <ul>
+                                <li><code>username</code> LIKE search</li>
+                            </ul>
+                        </li>
+                        <li><strong>Student Profile Search:</strong> Via nested <code>studentProfile</code> relationship
+                            <ul>
+                                <li><code>first_name</code>, <code>last_name</code></li>
+                                <li><code>grade_level</code>, <code>section</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Faculty Profile Search:</strong> Via nested <code>facultyProfile</code> relationship
+                            <ul>
+                                <li><code>first_name</code>, <code>last_name</code></li>
+                                <li><code>department</code></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="code-block">$query->where(function ($q) use ($searchTerm) {
+    $q->whereHas('book', function ($q) use ($searchTerm) {
+        // Book fields
+    })
+    ->orWhereHas('user', function ($q) use ($searchTerm) {
+        // User fields + nested student/faculty profiles
+    });
+});</div>
+
+                <h3>⏰ Sorting Priority</h3>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li>Primary: <code>due_date ASC</code> — <span class="highlight">Most urgent first</span></li>
+                        <li>Secondary: <code>created_at ASC</code> — Oldest loans first (for equal due dates)</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="sorting" class="section">
+            <h2>🎯 Sorting Algorithms Summary</h2>
+            
+            <div class="function-card">
+                <h3>Spaceship Operator (&lt;=&gt;)</h3>
+                <p>Used for three-way comparison in custom sorting functions.</p>
+                <div class="algorithm-steps">
+                    <ul>
+                        <li><code>a &lt;=&gt; b</code> returns:
+                            <ul>
+                                <li><strong>-1</strong> if a < b</li>
+                                <li><strong>0</strong> if a = b</li>
+                                <li><strong>1</strong> if a > b</li>
+                            </ul>
+                        </li>
+                        <li><strong>DESC sorting:</strong> <code>b &lt;=&gt; a</code> (reverse order)</li>
+                        <li><strong>ASC sorting:</strong> <code>a &lt;=&gt; b</code> (natural order)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>Priority-Based Sorting</h3>
+                <p>Used in loan management to prioritize urgent items.</p>
+                <div class="algorithm-steps">
+                    <ol>
+                        <li><strong>Primary Key:</strong> Most important criteria (e.g., due date)</li>
+                        <li><strong>Secondary Key:</strong> Tiebreaker when primary keys are equal</li>
+                        <li><strong>Implementation:</strong> Chain <code>orderBy()</code> clauses or use custom comparison functions</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="filtering" class="section">
+            <h2>🔧 Filtering Techniques</h2>
+            
+            <div class="function-card">
+                <h3>LIKE Pattern Matching</h3>
+                <p>Flexible text search across multiple fields.</p>
+                <div class="code-block">WHERE field LIKE '%search_term%'</div>
+                <ul>
+                    <li><code>%</code> = wildcard (matches any characters)</li>
+                    <li>Finds partial matches anywhere in the text</li>
+                    <li>Combined with <code>OR</code> for multi-field search</li>
+                </ul>
+            </div>
+
+            <div class="function-card">
+                <h3>Relationship-Based Filtering</h3>
+                <p>Filter parent models based on related model criteria.</p>
+                <div class="algorithm-steps">
+                    <ul>
+                        <li><strong>whereHas():</strong> Filter by existence of related records matching criteria</li>
+                        <li><strong>orWhereHas():</strong> OR condition for relationship filtering</li>
+                        <li><strong>with():</strong> Eager load relationships to avoid N+1 queries</li>
+                        <li><strong>withCount():</strong> Load count of related records</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <h3>Subquery Filtering</h3>
+                <p>Calculate availability using raw SQL subqueries.</p>
+                <div class="algorithm-steps">
+                    <strong>Pattern:</strong>
+                    <ol>
+                        <li>Count active loans via subquery</li>
+                        <li>Compare with total copies</li>
+                        <li>Determine availability status</li>
+                    </ol>
+                    <strong>Benefits:</strong>
+                    <ul>
+                        <li>Efficient single-query operation</li>
+                        <li>Real-time availability calculation</li>
+                        <li>No need for computed columns</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p><strong>Library Management System</strong> - Algorithm Documentation</p>
+    </footer>
+</body>
+</html>
